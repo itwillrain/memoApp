@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import styledNative, { Styled } from '@emotion/native';
 import { OriginalTheme } from '../styles/themes';
 
