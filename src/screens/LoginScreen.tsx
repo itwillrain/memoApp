@@ -3,12 +3,15 @@ import styledNative, { Styled } from '@emotion/native';
 import { OriginalTheme, theme } from '../styles/themes';
 
 const styled = styledNative as Styled<OriginalTheme>;
-const LoginScreen: FC = () => (
+const LoginScreen: FC<any> = ({ navigation }) => (
   <Container>
     <Title>ログイン</Title>
     <Input value="Email" />
     <Input value="Password" />
-    <SubmitButton onPress={() => {}} underlayColor={theme.colors.primary}>
+    <SubmitButton
+      onPress={() => navigation.navigate('Signup')}
+      underlayColor={theme.colors.primary}
+    >
       <SubmitButtonTitle>ログイン</SubmitButtonTitle>
     </SubmitButton>
   </Container>

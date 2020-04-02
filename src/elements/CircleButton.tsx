@@ -7,18 +7,19 @@ import { AppLoading } from 'expo';
 import fontawesomeConfig from '../fontawesome.config.json';
 import { OriginalTheme, theme } from '../styles/themes';
 
-interface CircleButton {
+interface Props {
   style?: ViewStyle;
   color?: string;
   name?: string;
+  onPress?: any;
 }
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fontAwesome = require('../../assets/fonts/fa-solid-900.ttf');
 
 const CustomIcon = createIconSet(fontawesomeConfig, 'FontAwesome', fontAwesome);
 
-const CircleButton: FC<CircleButton> = (props) => {
-  const { color, style, name } = props;
+const CircleButton: FC<Props> = (props) => {
+  const { color, style, name, onPress } = props;
   const [fontsLoaded] = useFonts({
     // eslint-disable-next-line global-require
     FontAwesome: require('../../assets/fonts/fa-solid-900.ttf'),
@@ -35,7 +36,11 @@ const CircleButton: FC<CircleButton> = (props) => {
     // eslint-disable-next-line no-else-return
   } else {
     return (
-      <Circle style={[style, { backgroundColor: bgColor }]}>
+      <Circle
+        style={[style, { backgroundColor: bgColor }]}
+        onPress={onPress}
+        underlayColor={theme.colors.grayLighten1}
+      >
         <CustomIcon
           name={name}
           style={[
@@ -48,7 +53,7 @@ const CircleButton: FC<CircleButton> = (props) => {
   }
 };
 const styled = styledNative as Styled<OriginalTheme>;
-const Circle = styled.View`
+const Circle = styled.TouchableHighlight`
   position: absolute;
   bottom: 32;
   right: 24;

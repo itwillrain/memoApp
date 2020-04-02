@@ -48,6 +48,7 @@ module.exports = {
     'no-console': 'warn',
     'no-continue': 'off',
     'require-yield': 'error',
+    'import/no-cycle': 'off',
     // for react-app-env.d.ts (https://github.com/facebook/create-react-app/issues/6560)
     'spaced-comment': [
       'error',

@@ -1,11 +1,22 @@
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import styledNative, { Styled } from '@emotion/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import CircleButton from '../elements/CircleButton';
 import { OriginalTheme } from '../styles/themes';
+import { RootStackParamList } from '../../App';
+
+type MemoDetailScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'MemoDetail'
+>;
+
+type Props = {
+  navigation: MemoDetailScreenNavigationProp;
+};
 
 const styled = styledNative as Styled<OriginalTheme>;
-const MemoDetailScreen: FC = () => (
+const MemoDetailScreen: FC<Props> = ({ navigation }) => (
   <Container>
     <MemoHeader>
       <View>
@@ -18,7 +29,14 @@ const MemoDetailScreen: FC = () => (
       <Text>講座のアイデア</Text>
     </MemoContent>
 
-    <CircleButton style={styles.editButton} color="white" name="pencil" />
+    <CircleButton
+      style={styles.editButton}
+      color="white"
+      name="pencil"
+      onPress={() => {
+        navigation.navigate('MemoEdit');
+      }}
+    />
   </Container>
 );
 
