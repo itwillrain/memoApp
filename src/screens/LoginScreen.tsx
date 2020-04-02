@@ -1,10 +1,9 @@
 import React, { FC, useState } from 'react';
 import styledNative, { Styled } from '@emotion/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import * as firebase from 'firebase';
 import { OriginalTheme, theme } from '../styles/themes';
 import { RootStackParamList } from '../../App';
-
-// onPress={() => navigation.navigate('Home')}
 
 type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -14,11 +13,21 @@ interface Props {
   navigation: LoginScreenNavigationProp;
 }
 const styled = styledNative as Styled<OriginalTheme>;
-const LoginScreen: FC<Props> = ({ _navigation }) => {
+const LoginScreen: FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    try {
+      const userCredencial = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+      console.log('SUCCESS', { userCredencial });
+      navigation.navigate('Home');
+    } catch (e) {
+      console.log('error', e);
+    }
+  };
 
   return (
     <Container>

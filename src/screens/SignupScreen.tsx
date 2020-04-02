@@ -1,18 +1,62 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styledNative, { Styled } from '@emotion/native';
+import * as firebase from 'firebase';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { OriginalTheme, theme } from '../styles/themes';
+import { RootStackParamList } from '../../App';
 
+type SignupScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Login'
+>;
+interface Props {
+  navigation: SignupScreenNavigationProp;
+}
 const styled = styledNative as Styled<OriginalTheme>;
-const LoginScreen: FC = () => (
-  <Container>
-    <Title>メンバー登録</Title>
-    <Input value="Email" />
-    <Input value="Password" />
-    <SubmitButton onPress={() => {}} underlayColor={theme.colors.primary}>
-      <SubmitButtonTitle>送信する</SubmitButtonTitle>
-    </SubmitButton>
-  </Container>
-);
+const LoginScreen: FC<Props> = ({ navigation }) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const handleSubmit = async () => {
+    try {
+      const user = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      if (user) {
+        navigation.navigate('Home');
+      }
+      console.log('SUCCESS', { user });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return (
+    <Container>
+      <Title>メンバー登録</Title>
+      <Input
+        value={email}
+        onChangeText={(text) => {
+          setEmail(text);
+        }}
+        autoCapitalize="none"
+        autoCorrect={false}
+        placeholder="Email Address"
+      />
+      <Input
+        value={password}
+        onChangeText={(text: string) => setPassword(text)}
+        placeholder="Password"
+        autoCapitalize="none"
+        autoCorrect={false}
+        secureTextEntry
+      />
+      <SubmitButton onPress={handleSubmit} underlayColor={theme.colors.primary}>
+        <SubmitButtonTitle>送信する</SubmitButtonTitle>
+      </SubmitButton>
+    </Container>
+  );
+};
 
 const Title = styled.Text`
   font-size: 28px;
