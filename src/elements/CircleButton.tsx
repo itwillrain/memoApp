@@ -4,7 +4,7 @@ import styledNative, { Styled } from '@emotion/native';
 import { useFonts } from '@use-expo/font';
 import { createIconSet } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
-
+import fontawesomeConfig from '../fontawesome.config.json';
 import { OriginalTheme, theme } from '../styles/themes';
 
 interface CircleButton {
@@ -12,17 +12,10 @@ interface CircleButton {
   color?: string;
   name?: string;
 }
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fontAwesome = require('../../assets/fonts/fa-solid-900.ttf');
 
-const CustomIcon = createIconSet(
-  {
-    pencil: '\uf303',
-  },
-  'FontAwesome',
-  fontAwesome,
-);
+const CustomIcon = createIconSet(fontawesomeConfig, 'FontAwesome', fontAwesome);
 
 const CircleButton: FC<CircleButton> = (props) => {
   const { color, style, name } = props;

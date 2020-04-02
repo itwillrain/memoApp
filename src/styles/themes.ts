@@ -18,7 +18,7 @@ export const theme: OriginalTheme = {
     positive: 'blue',
     negative: 'red',
     accent: 'pink',
-    gray: '',
+    gray: '#ddd',
     grayLighten1: '',
     white: 'white',
   },
