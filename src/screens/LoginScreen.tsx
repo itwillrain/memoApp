@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styledNative, { Styled } from '@emotion/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Props from 'react';
 import { OriginalTheme, theme } from '../styles/themes';
 import { RootStackParamList } from '../../App';
+
+// onPress={() => navigation.navigate('Home')}
 
 type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -13,19 +14,38 @@ interface Props {
   navigation: LoginScreenNavigationProp;
 }
 const styled = styledNative as Styled<OriginalTheme>;
-const LoginScreen: FC<Props> = ({ navigation }) => (
-  <Container>
-    <Title>ログイン</Title>
-    <Input value="Email" />
-    <Input value="Password" />
-    <SubmitButton
-      onPress={() => navigation.navigate('Home')}
-      underlayColor={theme.colors.primary}
-    >
-      <SubmitButtonTitle>ログイン</SubmitButtonTitle>
-    </SubmitButton>
-  </Container>
-);
+const LoginScreen: FC<Props> = ({ _navigation }) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const handleSubmit = () => {};
+
+  return (
+    <Container>
+      <Title>ログイン</Title>
+      <Input
+        value={email}
+        onChangeText={(text) => {
+          setEmail(text);
+        }}
+        autoCapitalize="none"
+        autoCorrect={false}
+        placeholder="Email Address"
+      />
+      <Input
+        value={password}
+        onChangeText={(text: string) => setPassword(text)}
+        placeholder="Password"
+        autoCapitalize="none"
+        autoCorrect={false}
+        secureTextEntry
+      />
+      <SubmitButton onPress={handleSubmit} underlayColor={theme.colors.primary}>
+        <SubmitButtonTitle>ログイン</SubmitButtonTitle>
+      </SubmitButton>
+    </Container>
+  );
+};
 
 const Title = styled.Text`
   font-size: 28px;
