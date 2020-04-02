@@ -11,13 +11,12 @@ import SignupScreen from './src/screens/SignupScreen';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 export type RootStackParamList = {
-  Home: undefined;
-  MemoDetail: { userId: string };
-  MMemo: undefined;
-  MemoList: undefined;
-  MemoEdit: undefined;
   Login: undefined;
   Signup: undefined;
+  Home: undefined;
+  MemoDetail: { userId: string };
+  MemoList: undefined;
+  MemoEdit: undefined;
 };
 
 export default function App() {
@@ -29,13 +28,14 @@ export default function App() {
           screenOptions={{
             headerTintColor: theme.colors.white,
             headerStyle: { backgroundColor: theme.colors.primaryDarken1 },
+            headerBackTitleVisible: false,
           }}
         >
-          <RootStack.Screen name="MMemo" component={MemoListScreen} />
-          <RootStack.Screen name="MemoDetail" component={MemoDetailScreen} />
-          <RootStack.Screen name="MemoEdit" component={MemoEditScreen} />
           <RootStack.Screen name="Login" component={LoginScreen} />
           <RootStack.Screen name="Signup" component={SignupScreen} />
+          <RootStack.Screen name="Home" component={MemoListScreen} />
+          <RootStack.Screen name="MemoDetail" component={MemoDetailScreen} />
+          <RootStack.Screen name="MemoEdit" component={MemoEditScreen} />
         </RootStack.Navigator>
       </NavigationContainer>
     </ThemeProvider>

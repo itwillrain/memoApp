@@ -1,15 +1,25 @@
 import React, { FC } from 'react';
 import styledNative, { Styled } from '@emotion/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import Props from 'react';
 import { OriginalTheme, theme } from '../styles/themes';
+import { RootStackParamList } from '../../App';
 
+type LoginScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Login'
+>;
+interface Props {
+  navigation: LoginScreenNavigationProp;
+}
 const styled = styledNative as Styled<OriginalTheme>;
-const LoginScreen: FC<any> = ({ navigation }) => (
+const LoginScreen: FC<Props> = ({ navigation }) => (
   <Container>
     <Title>ログイン</Title>
     <Input value="Email" />
     <Input value="Password" />
     <SubmitButton
-      onPress={() => navigation.navigate('Signup')}
+      onPress={() => navigation.navigate('Home')}
       underlayColor={theme.colors.primary}
     >
       <SubmitButtonTitle>ログイン</SubmitButtonTitle>
