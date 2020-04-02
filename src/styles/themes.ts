@@ -19,7 +19,7 @@ export const theme: OriginalTheme = {
     negative: 'red',
     accent: 'pink',
     gray: '#ddd',
-    grayLighten1: '',
+    grayLighten1: '#eee',
     white: 'white',
   },
 };
