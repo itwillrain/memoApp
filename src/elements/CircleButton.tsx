@@ -1,25 +1,27 @@
 import React, { FC } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import styled, { css } from '@emotion/native';
+import { StyleSheet, Text } from 'react-native';
+import styledNative, { Styled } from '@emotion/native';
+import { OriginalTheme } from '../styles/themes';
 
 const CircleButton: FC = () => (
-  <View style={styles.circleButton}>
+  <Circle>
     <Text style={styles.circleButtonTitle}>+</Text>
-  </View>
+  </Circle>
 );
+const styled = styledNative as Styled<OriginalTheme>;
+const Circle = styled.View`
+  background-color: ${(props) => props.theme.colors.accent};
+  position: absolute;
+  bottom: 32;
+  right: 24;
+  height: 40;
+  width: 40;
+  border-radius: 24px;
+  justify-content: center;
+  align-items: center;
+`;
 
 const styles = StyleSheet.create({
-  circleButton: {
-    position: 'absolute',
-    right: 24,
-    bottom: 32,
-    backgroundColor: 'red',
-    height: 40,
-    width: 40,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   circleButtonTitle: {
     color: '#fff',
   },

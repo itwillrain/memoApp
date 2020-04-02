@@ -1,23 +1,20 @@
 import React, { FC } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import styledNative, { Styled } from '@emotion/native';
-// import { Theme } from '../styles/themes';
-export interface Theme {
-  color: string;
-  backgroundColor: string;
-}
-const styled = styledNative as Styled<Theme>;
-const AppBar: FC<Theme> = () => (
+import { OriginalTheme } from '../styles/themes';
+
+const styled = styledNative as Styled<OriginalTheme>;
+const AppBar: FC = () => (
   <Container>
-    <View>
+    <>
       <Text style={styles.appBarTitle}>TA CLOUD</Text>
-    </View>
+    </>
   </Container>
 );
 
 const Container = styled.View`
   color: red;
-  background-color: ${(props) => props.theme.backgroundColor};
+  background-color: ${(props) => props.theme.colors.primary};
   position: absolute;
   top: 0;
   left: 0;
