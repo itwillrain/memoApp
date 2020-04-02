@@ -18,9 +18,7 @@ const MemoDetailScreen: FC = () => (
       <Text>講座のアイデア</Text>
     </MemoContent>
 
-    <CircleButton style={styles.editButton} color="white">
-      +
-    </CircleButton>
+    <CircleButton style={styles.editButton} color="white" name="pencil" />
   </Container>
 );
 

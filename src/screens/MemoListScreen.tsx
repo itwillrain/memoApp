@@ -7,7 +7,7 @@ import CircleButton from '../elements/CircleButton';
 const MemoListScreen: FC = () => (
   <>
     <MemoList />
-    <CircleButton />
+    <CircleButton name="plus" />
   </>
 );
 

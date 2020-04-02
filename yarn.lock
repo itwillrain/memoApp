@@ -1039,7 +1039,7 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@expo/vector-icons@^10.0.2":
+"@expo/vector-icons@^10.0.0", "@expo/vector-icons@^10.0.2":
   version "10.0.6"
   resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-10.0.6.tgz#5718953ff0b97827d11dae5787976fa8ce5caaed"
   integrity sha512-qNlKPNdf073LpeEpyClxAh0D3mmIK4TGAQzeKR0HVwf14RIEe17+mLW5Z6Ka5Ho/lUtKMRPDHumSllFyKvpeGg==
@@ -1472,6 +1472,11 @@
     invariant "^2.2.4"
     lodash "^4.5.0"
     prop-types "^15.6.1"
+
+"@use-expo/font@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@use-expo/font/-/font-1.0.1.tgz#cc479e1b7a3ff2ae119ef4c19ec5aa24b71e94c9"
+  integrity sha512-BK5bxlXm8/Anm/sX9224hsnocY0ZNWGsEXmG2DLdRhE+GV62PvGc6PYiusq85EvkmBxBZy034OTQZ8Xw4w3k8w==
 
 abort-controller@^3.0.0:
   version "3.0.0"
