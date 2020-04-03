@@ -23,7 +23,7 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
         .auth()
         .createUserWithEmailAndPassword(email, password);
       if (user) {
-        navigation.navigate('Home');
+        navigation.navigate('MemoList');
       }
       console.log('SUCCESS', { user });
     } catch (e) {

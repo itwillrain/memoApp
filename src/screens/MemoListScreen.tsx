@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import styledNative, { Styled } from '@emotion/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+
+import { RouteProp } from '@react-navigation/native';
 import { OriginalTheme } from '../styles/themes';
 import MemoList from '../components/MemoList';
 import { RootStackParamList } from '../../App';
@@ -11,18 +13,26 @@ export type MemoListScreenNavigationProp = StackNavigationProp<
   'MemoList'
 >;
 
+type MemoListScreenRouteProp = RouteProp<RootStackParamList, 'MemoList'>;
+
 type Props = {
   navigation: MemoListScreenNavigationProp;
+  route: MemoListScreenRouteProp;
 };
 const styled = styledNative as Styled<OriginalTheme>;
-
-const MemoListScreen: FC<Props> = ({ navigation }) => {
+const handlePress = async (
+  navigation: MemoListScreenNavigationProp,
+  route: MemoListScreenRouteProp,
+): Promise<void> => {
+  navigation.navigate('MemoCreate', { currentUser: route.params.currentUser });
+};
+const MemoListScreen: FC<Props> = ({ navigation, route }) => {
   return (
     <Container>
       <MemoList navigation={navigation} />
       <CircleButton
         name="plus"
-        onPress={() => navigation.navigate('MemoEdit')}
+        onPress={() => handlePress(navigation, route)}
       />
     </Container>
   );

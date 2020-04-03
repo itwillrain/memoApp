@@ -3,6 +3,7 @@ import { ThemeProvider } from 'emotion-theming';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as firebase from 'firebase';
+import 'firebase/firestore';
 import { theme } from './src/styles/themes';
 import MemoListScreen from './src/screens/MemoListScreen';
 import MemoDetailScreen from './src/screens/MemoDetailScreen';
@@ -11,6 +12,7 @@ import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
 
 import ENV from './env.json';
+import MemoCreateScreen from './src/screens/MemoCreateScreen';
 
 const firebaseConfig = {
   apiKey: ENV.FIERBASE_API_KEY,
@@ -27,10 +29,11 @@ const RootStack = createStackNavigator<RootStackParamList>();
 export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
-  Home: undefined;
-  MemoDetail: { userId: string };
-  MemoList: undefined;
+  // Home: { currentUser: firebase.auth.UserCredential };
+  MemoDetail: undefined;
+  MemoList: { currentUser: firebase.auth.UserCredential };
   MemoEdit: undefined;
+  MemoCreate: { currentUser: firebase.auth.UserCredential };
 };
 
 export default function App() {
@@ -47,9 +50,10 @@ export default function App() {
         >
           <RootStack.Screen name="Login" component={LoginScreen} />
           <RootStack.Screen name="Signup" component={SignupScreen} />
-          <RootStack.Screen name="Home" component={MemoListScreen} />
+          <RootStack.Screen name="MemoList" component={MemoListScreen} />
           <RootStack.Screen name="MemoDetail" component={MemoDetailScreen} />
           <RootStack.Screen name="MemoEdit" component={MemoEditScreen} />
+          <RootStack.Screen name="MemoCreate" component={MemoCreateScreen} />
         </RootStack.Navigator>
       </NavigationContainer>
     </ThemeProvider>

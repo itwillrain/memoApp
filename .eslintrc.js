@@ -66,6 +66,7 @@ module.exports = {
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
     '@typescript-eslint/no-use-before-define': 'off',
 
+
     // prefer-arrow
     'prefer-arrow/prefer-arrow-functions': [
       'error',
