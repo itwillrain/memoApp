@@ -2,58 +2,60 @@
 import React, { FC } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import styledNative, { Styled } from '@emotion/native';
+import { FlatList } from 'react-native-gesture-handler';
 import { theme, OriginalTheme } from '../styles/themes';
 import { MemoListScreenNavigationProp } from '../screens/MemoListScreen';
+import { Memo } from '../services/models/memo';
 
 interface Props {
   navigation: MemoListScreenNavigationProp;
+  memos: Memo[];
 }
 
 const styled = styledNative as Styled<OriginalTheme>;
-const MemoList: FC<Props> = ({ navigation }) => {
+
+const Item = ({
+  title,
+  navigation,
+}: {
+  title: string;
+  navigation: MemoListScreenNavigationProp;
+}) => (
+  <MemoListItem
+    onPress={() => navigation.navigate('MemoDetail')}
+    underlayColor={theme.colors.grayLighten1}
+  >
+    <>
+      <MemoListTitle>{title}</MemoListTitle>
+      <MemoListDate>2017/10/10</MemoListDate>
+    </>
+  </MemoListItem>
+);
+const MemoList: FC<Props> = ({ navigation, memos }) => {
   return (
     <View style={styles.memoList}>
-      <MemoItem
-        underlayColor={theme.colors.primary}
-        onPress={() => {
-          navigation.navigate('MemoDetail');
-        }}
-      >
-        <View style={styles.memoListItem}>
-          <Text>講座のアイテム</Text>
-          <Text>2017/10/10</Text>
-        </View>
-      </MemoItem>
-
-      <View style={styles.memoListItem}>
-        <Text>講座のアイテム</Text>
-        <Text>2017/10/10</Text>
-      </View>
-
-      <View style={styles.memoListItem}>
-        <Text>講座のアイテム</Text>
-        <Text>2017/10/10</Text>
-      </View>
-
-      <View style={styles.memoListItem}>
-        <Text>講座のアイテム</Text>
-        <Text>2017/10/10</Text>
-      </View>
+      <FlatList
+        data={memos}
+        renderItem={({ item }) => (
+          <Item title={item.body} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };
-
-const MemoItem = styled.TouchableHighlight``;
+const MemoListItem = styled.TouchableHighlight`
+  padding: 16px;
+  border-bottom-color: #eee;
+  border-bottom-width: 1;
+`;
+const MemoListTitle = styled.Text``;
+const MemoListDate = styled.Text``;
 
 const styles = StyleSheet.create({
   memoList: {
     width: '100%',
     flex: 1,
-  },
-  memoListItem: {
-    padding: 16,
-    borderBottomColor: '#eee',
-    borderBottomWidth: 1,
   },
 });
 

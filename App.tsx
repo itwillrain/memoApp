@@ -31,7 +31,7 @@ export type RootStackParamList = {
   Signup: undefined;
   // Home: { currentUser: firebase.auth.UserCredential };
   MemoDetail: undefined;
-  MemoList: { currentUser: firebase.auth.UserCredential };
+  MemoList: undefined;
   MemoEdit: undefined;
   MemoCreate: { currentUser: firebase.auth.UserCredential };
 };

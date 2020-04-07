@@ -26,17 +26,19 @@ const MemoCreateScreen: FC<Props> = ({ navigation, route }) => {
   const handleSave = async () => {
     try {
       const db = firebase.firestore();
-      const user = route.params.currentUser.user.uid;
-      const ref = await db
-        .collection(`users/${user}/memos`)
-        .withConverter(memoConverter)
-        .add({
-          body,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-      navigation.navigate('MemoList');
-      console.log(ref.id);
+      const { currentUser } = firebase.auth();
+      if (currentUser) {
+        const { uid } = currentUser;
+        await db
+          .collection(`users/${uid}/memos`)
+          .withConverter(memoConverter)
+          .add({
+            body,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+        navigation.navigate('MemoList');
+      }
     } catch (e) {
       console.error(e);
     }

@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 
-class Memo {
+export class Memo {
   constructor(
     readonly body: string,
     readonly createdAt:

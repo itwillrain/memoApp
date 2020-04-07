@@ -14,8 +14,8 @@ interface Props {
 }
 const styled = styledNative as Styled<OriginalTheme>;
 const LoginScreen: FC<Props> = ({ navigation }) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>('info.itwillrain@gmail.com');
+  const [password, setPassword] = useState<string>('12345678');
 
   const handleSubmit = async () => {
     try {
@@ -23,7 +23,7 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
         .auth()
         .signInWithEmailAndPassword(email, password);
       console.log('SUCCESS', { userCredencial });
-      navigation.navigate('MemoList', { currentUser: userCredencial });
+      navigation.navigate('MemoList');
     } catch (e) {
       console.log('error', e);
     }

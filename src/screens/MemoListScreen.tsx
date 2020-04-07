@@ -1,42 +1,53 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styledNative, { Styled } from '@emotion/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
-import { RouteProp } from '@react-navigation/native';
+import * as firebase from 'firebase';
 import { OriginalTheme } from '../styles/themes';
 import MemoList from '../components/MemoList';
 import { RootStackParamList } from '../../App';
 import CircleButton from '../elements/CircleButton';
+import 'firebase/firestore';
+import { memoConverter } from '../services/models/memo';
 
 export type MemoListScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'MemoList'
 >;
-
-type MemoListScreenRouteProp = RouteProp<RootStackParamList, 'MemoList'>;
-
 type Props = {
   navigation: MemoListScreenNavigationProp;
-  route: MemoListScreenRouteProp;
 };
-const styled = styledNative as Styled<OriginalTheme>;
 const handlePress = async (
   navigation: MemoListScreenNavigationProp,
-  route: MemoListScreenRouteProp,
 ): Promise<void> => {
-  navigation.navigate('MemoCreate', { currentUser: route.params.currentUser });
+  navigation.navigate('MemoCreate');
 };
-const MemoListScreen: FC<Props> = ({ navigation, route }) => {
+
+const MemoListScreen: FC<Props> = ({ navigation }) => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const db = firebase.firestore();
+      const { uid } = firebase.auth().currentUser;
+      const snap = await db
+        .collection(`users/${uid}/memos`)
+        .withConverter(memoConverter)
+        .get();
+      const memo = snap.docs.map((doc) => doc.data());
+      setData(memo);
+    };
+    fetchData();
+  }, []);
+
   return (
     <Container>
-      <MemoList navigation={navigation} />
-      <CircleButton
-        name="plus"
-        onPress={() => handlePress(navigation, route)}
-      />
+      <MemoList navigation={navigation} memos={data} />
+      <CircleButton name="plus" onPress={() => handlePress(navigation)} />
     </Container>
   );
 };
+
+const styled = styledNative as Styled<OriginalTheme>;
 const Container = styled.View`
   flex: 1;
   background-color: ${(props) => props.theme.colors.white};
