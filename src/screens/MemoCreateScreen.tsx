@@ -21,6 +21,7 @@ type Props = {
 };
 const styled = styledNative as Styled<OriginalTheme>;
 const MemoCreateScreen: FC<Props> = ({ navigation, route }) => {
+  console.log(route);
   const [body, setBody] = useState('');
 
   const handleSave = async () => {
@@ -29,14 +30,11 @@ const MemoCreateScreen: FC<Props> = ({ navigation, route }) => {
       const { currentUser } = firebase.auth();
       if (currentUser) {
         const { uid } = currentUser;
-        await db
-          .collection(`users/${uid}/memos`)
-          .withConverter(memoConverter)
-          .add({
-            body,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-          });
+        await db.collection(`users/${uid}/memos`).add({
+          body,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
         navigation.navigate('MemoList');
       }
     } catch (e) {
@@ -65,6 +63,7 @@ const Container = styled.View`
 `;
 
 const MemoEditInput = styled.TextInput`
+  padding: 16px;
   flex: 1;
   font-size: 16px;
   background-color: ${(props) => props.theme.colors.white};

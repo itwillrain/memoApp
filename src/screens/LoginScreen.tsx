@@ -22,10 +22,10 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
       const userCredencial = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
-      console.log('SUCCESS', { userCredencial });
+      // console.log('SUCCESS', { userCredencial });
       navigation.navigate('MemoList');
     } catch (e) {
-      console.log('error', e);
+      // console.log('error', e);
     }
   };
 

@@ -10,19 +10,11 @@ import MemoDetailScreen from './src/screens/MemoDetailScreen';
 import MemoEditScreen from './src/screens/MemoEditScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
+import FirebaseApp from './src/FirebaseApp';
 
-import ENV from './env.json';
 import MemoCreateScreen from './src/screens/MemoCreateScreen';
+import firebaseConfig from './src/firebase-config';
 
-const firebaseConfig = {
-  apiKey: ENV.FIERBASE_API_KEY,
-  authDomain: ENV.FIREBASE_AUTH_DOMAIN,
-  databaseURL: ENV.FIREBASE_DATABASE_URL,
-  projectId: ENV.FIREBASE_PROJECT_ID,
-  storageBucket: ENV.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: ENV.FIREBASE_SENDER_ID,
-  appId: ENV.FIREBASE_APP_ID,
-};
 firebase.initializeApp(firebaseConfig);
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -30,32 +22,34 @@ export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
   // Home: { currentUser: firebase.auth.UserCredential };
-  MemoDetail: undefined;
+  MemoDetail: { id: string };
   MemoList: undefined;
-  MemoEdit: undefined;
+  MemoEdit: { id: string };
   MemoCreate: { currentUser: firebase.auth.UserCredential };
 };
 
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        <RootStack.Navigator
-          initialRouteName="Login"
-          screenOptions={{
-            headerTintColor: theme.colors.white,
-            headerStyle: { backgroundColor: theme.colors.primaryDarken1 },
-            headerBackTitleVisible: false,
-          }}
-        >
-          <RootStack.Screen name="Login" component={LoginScreen} />
-          <RootStack.Screen name="Signup" component={SignupScreen} />
-          <RootStack.Screen name="MemoList" component={MemoListScreen} />
-          <RootStack.Screen name="MemoDetail" component={MemoDetailScreen} />
-          <RootStack.Screen name="MemoEdit" component={MemoEditScreen} />
-          <RootStack.Screen name="MemoCreate" component={MemoCreateScreen} />
-        </RootStack.Navigator>
-      </NavigationContainer>
+      <FirebaseApp>
+        <NavigationContainer>
+          <RootStack.Navigator
+            initialRouteName="Login"
+            screenOptions={{
+              headerTintColor: theme.colors.white,
+              headerStyle: { backgroundColor: theme.colors.primaryDarken1 },
+              headerBackTitleVisible: false,
+            }}
+          >
+            <RootStack.Screen name="Login" component={LoginScreen} />
+            <RootStack.Screen name="Signup" component={SignupScreen} />
+            <RootStack.Screen name="MemoList" component={MemoListScreen} />
+            <RootStack.Screen name="MemoDetail" component={MemoDetailScreen} />
+            <RootStack.Screen name="MemoEdit" component={MemoEditScreen} />
+            <RootStack.Screen name="MemoCreate" component={MemoCreateScreen} />
+          </RootStack.Navigator>
+        </NavigationContainer>
+      </FirebaseApp>
     </ThemeProvider>
   );
 }

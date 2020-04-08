@@ -1,50 +1,68 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import styledNative, { Styled } from '@emotion/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import * as firebase from 'firebase/app';
+import useMemo from '../hooks/use-memo';
 import CircleButton from '../elements/CircleButton';
 import { OriginalTheme } from '../styles/themes';
 import { RootStackParamList } from '../../App';
+import { formatDate } from '../filters';
 
 type MemoDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'MemoDetail'
 >;
-
+type MemoDetailScreenRouteProp = RouteProp<RootStackParamList, 'MemoDetail'>;
 type Props = {
   navigation: MemoDetailScreenNavigationProp;
+  route: MemoDetailScreenRouteProp;
 };
 
 const styled = styledNative as Styled<OriginalTheme>;
-const MemoDetailScreen: FC<Props> = ({ navigation }) => (
-  <Container>
-    <MemoHeader>
-      <View>
-        <MemoHeaderTitle>講座アイデア</MemoHeaderTitle>
-        <MemoHeaderDate>2017/12/12</MemoHeaderDate>
-      </View>
-    </MemoHeader>
+const MemoDetailScreen: FC<Props> = ({ navigation, route }) => {
+  const { id } = route.params;
+  const { uid } = firebase.auth().currentUser;
+  const { loading, memo } = useMemo(uid, id);
 
-    <MemoContent>
-      <Text>講座のアイデア</Text>
-    </MemoContent>
+  return (
+    <Container>
+      <MemoHeader>
+        <View>
+          <MemoHeaderTitle>
+            {loading ? '' : memo.body.substring(0, 10)}
+          </MemoHeaderTitle>
+          <MemoHeaderDate>{formatDate(memo.createdAt)}</MemoHeaderDate>
+        </View>
+      </MemoHeader>
 
-    <CircleButton
-      style={styles.editButton}
-      color="white"
-      name="pencil"
-      onPress={() => {
-        navigation.navigate('MemoEdit');
-      }}
-    />
-  </Container>
-);
+      <MemoContent>
+        <MemoBody>{memo.body}</MemoBody>
+      </MemoContent>
+
+      <CircleButton
+        style={styles.editButton}
+        color="white"
+        name="pencil"
+        onPress={() => {
+          navigation.navigate('MemoEdit', { id });
+        }}
+      />
+    </Container>
+  );
+};
 
 const styles = StyleSheet.create({
   editButton: {
     top: 80,
   },
 });
+
+const MemoBody = styled.Text`
+  line-height: 24;
+  font-size: 15px;
+`;
 
 const Container = styled.View`
   flex: 1;

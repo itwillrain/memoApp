@@ -1,11 +1,12 @@
 /* eslint-disable import/no-cycle */
 import React, { FC } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import styledNative, { Styled } from '@emotion/native';
 import { FlatList } from 'react-native-gesture-handler';
 import { theme, OriginalTheme } from '../styles/themes';
 import { MemoListScreenNavigationProp } from '../screens/MemoListScreen';
 import { Memo } from '../services/models/memo';
+import { formatDate } from '../filters';
 
 interface Props {
   navigation: MemoListScreenNavigationProp;
@@ -15,30 +16,33 @@ interface Props {
 const styled = styledNative as Styled<OriginalTheme>;
 
 const Item = ({
-  title,
+  memo,
   navigation,
 }: {
-  title: string;
+  memo: Memo;
   navigation: MemoListScreenNavigationProp;
-}) => (
-  <MemoListItem
-    onPress={() => navigation.navigate('MemoDetail')}
-    underlayColor={theme.colors.grayLighten1}
-  >
-    <>
-      <MemoListTitle>{title}</MemoListTitle>
-      <MemoListDate>2017/10/10</MemoListDate>
-    </>
-  </MemoListItem>
-);
+}) => {
+  return (
+    <MemoListItem
+      onPress={() => {
+        navigation.navigate('MemoDetail', { id: memo.id });
+      }}
+      underlayColor={theme.colors.grayLighten1}
+    >
+      <>
+        <MemoListTitle>{memo.body.substring(0, 10)}</MemoListTitle>
+        <MemoListDate>{formatDate(memo.updatedAt)}</MemoListDate>
+      </>
+    </MemoListItem>
+  );
+};
+
 const MemoList: FC<Props> = ({ navigation, memos }) => {
   return (
     <View style={styles.memoList}>
       <FlatList
         data={memos}
-        renderItem={({ item }) => (
-          <Item title={item.body} navigation={navigation} />
-        )}
+        renderItem={({ item }) => <Item memo={item} navigation={navigation} />}
         keyExtractor={(item) => item.id}
       />
     </View>
