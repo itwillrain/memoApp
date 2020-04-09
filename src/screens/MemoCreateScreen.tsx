@@ -6,9 +6,7 @@ import { RouteProp } from '@react-navigation/native';
 import CircleButton from '../elements/CircleButton';
 import { OriginalTheme } from '../styles/themes';
 import { RootStackParamList } from '../../App';
-
 import 'firebase/firestore';
-import { memoConverter } from '../services/models/memo';
 
 type MemoCreateScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -20,8 +18,7 @@ type Props = {
   route: MemoCreateScreenRouteProp;
 };
 const styled = styledNative as Styled<OriginalTheme>;
-const MemoCreateScreen: FC<Props> = ({ navigation, route }) => {
-  console.log(route);
+const MemoCreateScreen: FC<Props> = ({ navigation }) => {
   const [body, setBody] = useState('');
 
   const handleSave = async () => {
@@ -35,10 +32,10 @@ const MemoCreateScreen: FC<Props> = ({ navigation, route }) => {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
-        navigation.navigate('MemoList');
+        navigation.goBack();
       }
     } catch (e) {
-      console.error(e);
+      throw new Error(e);
     }
   };
 
@@ -49,11 +46,7 @@ const MemoCreateScreen: FC<Props> = ({ navigation, route }) => {
         value={body}
         onChangeText={(text: string) => setBody(text)}
       />
-      <CircleButton
-        name="check"
-        onPress={() => handleSave()}
-        // onPress={() => navigation.navigate('MemoDetail')}
-      />
+      <CircleButton name="check" onPress={() => handleSave()} />
     </Container>
   );
 };

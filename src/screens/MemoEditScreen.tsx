@@ -18,28 +18,28 @@ type Props = {
   navigation: MemoEditScreenNavigationProp;
   route: MemoEditScreenRouteProp;
 };
+
 const styled = styledNative as Styled<OriginalTheme>;
 const MemoEditScreen: FC<Props> = ({ navigation, route }) => {
   const [_memo, setMemo] = useState<Memo>(new Memo('', null, null));
   const { uid } = firebase.auth().currentUser;
-  const { id } = route.params;
-  const { loading, memo } = useMemo(uid, id);
+  const { id, refresh } = route.params;
+  const { memo } = useMemo(uid, id);
 
   useEffect(() => {
     setMemo(memo);
   }, [memo]);
-
   const hadlePress = async () => {
     const db = firebase.firestore();
     try {
-      console.log(_memo);
       await db
         .doc(`users/${uid}/memos/${id}`)
         .withConverter(memoConverter)
         .set(_memo);
-      console.log('SUCCESS');
+      navigation.goBack();
+      refresh(_memo);
     } catch (e) {
-      console.error(e);
+      throw new Error(e);
     }
   };
 
@@ -58,15 +58,16 @@ const MemoEditScreen: FC<Props> = ({ navigation, route }) => {
     </Container>
   );
 };
-const Container = styled.View`
+
+const Container = styled.KeyboardAvoidingView`
   flex: 1;
   width: 100%;
 `;
-
 const MemoEditInput = styled.TextInput`
   flex: 1;
   font-size: 16px;
   padding: 16px;
+  width: 100%;
   background-color: ${(props) => props.theme.colors.white};
 `;
 

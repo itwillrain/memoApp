@@ -26,15 +26,15 @@ const MemoListScreen: FC<Props> = ({ navigation }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = () => {
       const db = firebase.firestore();
       const { uid } = firebase.auth().currentUser;
-      const snap = await db
-        .collection(`users/${uid}/memos`)
+      db.collection(`users/${uid}/memos`)
         .withConverter(memoConverter)
-        .get();
-      const memo = snap.docs.map((doc) => doc.data());
-      setData(memo);
+        .onSnapshot((snap) => {
+          const memo = snap.docs.map((doc) => doc.data());
+          setData(memo);
+        });
     };
     fetchData();
   }, []);

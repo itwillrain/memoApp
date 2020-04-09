@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import { YellowBox } from 'react-native';
 import { theme } from './src/styles/themes';
 import MemoListScreen from './src/screens/MemoListScreen';
 import MemoDetailScreen from './src/screens/MemoDetailScreen';
@@ -15,6 +16,8 @@ import FirebaseApp from './src/FirebaseApp';
 import MemoCreateScreen from './src/screens/MemoCreateScreen';
 import firebaseConfig from './src/firebase-config';
 
+YellowBox.ignoreWarnings(['Setting a timer']);
+
 firebase.initializeApp(firebaseConfig);
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -24,10 +27,9 @@ export type RootStackParamList = {
   // Home: { currentUser: firebase.auth.UserCredential };
   MemoDetail: { id: string };
   MemoList: undefined;
-  MemoEdit: { id: string };
+  MemoEdit: { id: string; refresh: Function };
   MemoCreate: { currentUser: firebase.auth.UserCredential };
 };
-
 export default function App() {
   return (
     <ThemeProvider theme={theme}>

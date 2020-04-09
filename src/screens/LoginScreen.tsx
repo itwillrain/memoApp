@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import styledNative, { Styled } from '@emotion/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as firebase from 'firebase';
+import { CommonActions } from '@react-navigation/native';
 import { OriginalTheme, theme } from '../styles/themes';
 import { RootStackParamList } from '../../App';
 
@@ -19,14 +20,24 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
 
   const handleSubmit = async () => {
     try {
-      const userCredencial = await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password);
-      // console.log('SUCCESS', { userCredencial });
-      navigation.navigate('MemoList');
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'MemoList',
+            },
+          ],
+        }),
+      );
     } catch (e) {
-      // console.log('error', e);
+      throw new Error(e);
     }
+  };
+
+  const onSignup = () => {
+    navigation.navigate('Signup');
   };
 
   return (
@@ -52,9 +63,22 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
       <SubmitButton onPress={handleSubmit} underlayColor={theme.colors.primary}>
         <SubmitButtonTitle>ログイン</SubmitButtonTitle>
       </SubmitButton>
+
+      <Signup onPress={onSignup}>
+        <SignupText>メンバー登録する</SignupText>
+      </Signup>
     </Container>
   );
 };
+
+const Signup = styled.TouchableOpacity`
+  margin-top: 16px;
+  align-self: center;
+`;
+
+const SignupText = styled.Text`
+  font-size: 16px;
+`;
 
 const Title = styled.Text`
   font-size: 28px;

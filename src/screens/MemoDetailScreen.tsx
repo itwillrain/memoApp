@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
+
 import { StyleSheet, View } from 'react-native';
 import styledNative, { Styled } from '@emotion/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -9,6 +10,7 @@ import CircleButton from '../elements/CircleButton';
 import { OriginalTheme } from '../styles/themes';
 import { RootStackParamList } from '../../App';
 import { formatDate } from '../filters';
+import { Memo } from '../services/models/memo';
 
 type MemoDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -26,19 +28,29 @@ const MemoDetailScreen: FC<Props> = ({ navigation, route }) => {
   const { uid } = firebase.auth().currentUser;
   const { loading, memo } = useMemo(uid, id);
 
+  const [_memo, setMemo] = useState(new Memo('', null, null));
+
+  useEffect(() => {
+    setMemo(memo);
+  }, [memo]);
+
+  const refreshFunc = (val: Memo) => {
+    setMemo(val);
+  };
+
   return (
     <Container>
       <MemoHeader>
         <View>
           <MemoHeaderTitle>
-            {loading ? '' : memo.body.substring(0, 10)}
+            {loading ? '' : _memo.body.substring(0, 10)}
           </MemoHeaderTitle>
-          <MemoHeaderDate>{formatDate(memo.createdAt)}</MemoHeaderDate>
+          <MemoHeaderDate>{formatDate(_memo.createdAt)}</MemoHeaderDate>
         </View>
       </MemoHeader>
 
       <MemoContent>
-        <MemoBody>{memo.body}</MemoBody>
+        <MemoBody>{_memo.body}</MemoBody>
       </MemoContent>
 
       <CircleButton
@@ -46,7 +58,10 @@ const MemoDetailScreen: FC<Props> = ({ navigation, route }) => {
         color="white"
         name="pencil"
         onPress={() => {
-          navigation.navigate('MemoEdit', { id });
+          navigation.navigate('MemoEdit', {
+            id,
+            refresh: refreshFunc,
+          });
         }}
       />
     </Container>

@@ -29,7 +29,13 @@ const useMemo = (uid: string, id: string) => {
       setLoading(false);
     };
     load();
-  }, [uid, id]);
+    const clear = () => {
+      console.log('clear');
+    };
+
+    return clear;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return { memo, loading, error };
 };

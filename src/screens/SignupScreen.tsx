@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import styledNative, { Styled } from '@emotion/native';
 import * as firebase from 'firebase';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { CommonActions } from '@react-navigation/native';
 import { OriginalTheme, theme } from '../styles/themes';
 import { RootStackParamList } from '../../App';
 
@@ -23,11 +24,19 @@ const LoginScreen: FC<Props> = ({ navigation }) => {
         .auth()
         .createUserWithEmailAndPassword(email, password);
       if (user) {
-        navigation.navigate('MemoList');
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'MemoList',
+              },
+            ],
+          }),
+        );
       }
-      console.log('SUCCESS', { user });
     } catch (e) {
-      console.log(e);
+      throw new Error(e);
     }
   };
 
